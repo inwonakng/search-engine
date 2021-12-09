@@ -28,7 +28,7 @@ const ResultsPage = () => {
     // console.log(useAppSelector((state)=>getQuery(state)))
 
     const { data, error, isLoading } = useGetResultsQuery(state.query)
-    // console.log(data)
+    console.log(data)
 
     window.history.replaceState('Results',`Page `,`${window.location.origin}${location.pathname}?${to_url(state.query)}`)
     const onMovePage = (page:number,pageSize:number) => {
@@ -52,7 +52,7 @@ const ResultsPage = () => {
             :   error === undefined && data !== undefined && data.length > 0
                 ?
                 getSlice(data).map( (r,i) =>
-                    <OneResult idx={i} title={r.title} body={r.body} url={r.body} key={r.title+i} />
+                    <OneResult idx={i} title={r.title} body={r.body} url={r.url} key={r.title+i} />
                 )
                 :
                 // <View></View>

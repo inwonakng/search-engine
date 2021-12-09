@@ -19,20 +19,23 @@ const OneResult: React.FC<Props> = ({
     url = '',
     idx = -1
 }) => {
-
-
 	const inputprops = {}
 	return (
 		<div className='OneResult'>
             <div className='title-and-link'>
                 <Title level={3} className='resultTitle'>{title.slice(0,40)}</Title>
-                <Link className='resultLink' to={url}>
+                <a 
+                    className='resultLink'
+                    href={ url }
+                    target='_blank'
+                >
+                    
                     <Text underline={true} style={{color:'#1890ff'}}>
                     {url.slice(0,50)}
                     </Text>
-                </Link>
+                </a>
             </div>
-            <Text>{body.slice(0,500)}</Text>
+            <Text>{`${body.slice(0,400)} ${body.length>400 ? '...' : ''}`}</Text>
 		</div>
 	)
 }

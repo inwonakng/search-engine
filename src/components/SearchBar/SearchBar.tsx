@@ -3,13 +3,15 @@ import { useAppSelector,useAppDispatch } from '../../redux/hooks';
 
 import AdvancedSearch from '../AdvancedSearch/AdvancedSearch';
 import './SearchBar.css';
-import { Typography,Button,Image, Input,AutoComplete } from 'antd';
+import { Typography,Button,Image, Input,AutoComplete,Popover,Slider,InputNumber,Row,Col } from 'antd';
 import * as qs from 'qs'
 import logo from '../../assets/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Query,emptyQuery } from '../../types/query'
 import { addHistory, getHistory } from '../../redux/searchHistory/searchHistorySlice';
+import { SettingOutlined } from '@ant-design/icons'
 
+import {random} from './randomqueries.js'
 const { Text } = Typography
 // declare prop types here
 export type Props = {
@@ -22,7 +24,8 @@ const SearchBar: React.FC<Props> = ({
 	prevSearch = emptyQuery,
 }) => {
 	const dispatch = useAppDispatch()
-	const [state,setstate] = useState({query:prevSearch})
+	const navigate = useNavigate()
+	const [state,setstate] = useState({query:prevSearch,showsetting:false})
 
 	const searchhistory = useAppSelector((state) => getHistory(state))
 	const suggestions = searchhistory.map(v => ({value:v.text}))
@@ -30,6 +33,7 @@ const SearchBar: React.FC<Props> = ({
 	console.log(searchhistory)
 
 	const settext = (t:string) => setstate({...state,query:{...state.query,text:t}})
+	const setshowsetting = (v:boolean) => setstate({...state,showsetting:v})
 	// listener for input event on the text input
 	const onInput = (e: React.FormEvent<HTMLInputElement>) => {
 		console.log('go')
@@ -47,16 +51,70 @@ const SearchBar: React.FC<Props> = ({
 		dispatch(addHistory(state.query))
 	}
 
+	const onPressSettings = () => {
+		setshowsetting(!state.showsetting)
+	}
+
 	// when user presses regular search
 	const onPressRandom = () => {
-		const randomquery = 'randomquery'
-		// dispatch(setText(randomquery))
+		navigate(`/results?${qs.stringify({...state.query,text:random[~~(Math.random()*100)]})}`)
 	}
+
+	const onPageSizeChange = (value:number) => {
+		setstate({...state,query:{...state.query,page_size:value}})
+	}
+
+	const settingsMenu =(<>
+
+		<Row>
+			<Text>Page Size</Text>
+		</Row>
+		<Row>
+			<Col span={15}>
+			<Slider
+				min={10}
+				max={50}
+				onChange={onPageSizeChange}
+				value={state.query.page_size}
+			/>
+			</Col>
+			<Col span={4}>
+			<InputNumber
+				min={10}
+				max={50}
+				style={{ margin: '0 16px' }}
+				value={state.query.page_size}
+				onChange={onPageSizeChange}
+			/>
+			</Col>
+		</Row>
+	</>)
+
+
 	const rendertype = fullscreen ? 'fullscreen': 'partial'
 
 	return (
-		<div className={`SearchBar ${fullscreen ? 'fullscreen' : 'partial'}`}>
-			<Image src={logo} preview={false} />
+		<div className={`SearchBar ${rendertype}`}>
+			<div className={`settings-menu ${rendertype}`}>
+				<Popover
+					visible={state.showsetting}
+					content={settingsMenu}
+					trigger='click'
+					onVisibleChange={()=>setshowsetting(!state.showsetting)}
+				>
+					<Button
+						type='text'
+						onClick={onPressSettings}
+					>
+						<SettingOutlined style={{fontSize:'20px'}}/>
+					</Button>
+					
+
+				</Popover>
+			</div>
+			<Link to='/'>
+				<Image src={logo} preview={false} />
+			</Link>
 			<div className={`inner ${rendertype}`}>
 			<AutoComplete
 				dropdownMatchSelectWidth={252}
@@ -82,8 +140,7 @@ const SearchBar: React.FC<Props> = ({
 					width={'70%'}
 				/>
 					
-			</AutoComplete>
-				<AdvancedSearch/>				
+			</AutoComplete>			
 				<div className={`btnGroup ${rendertype}`}>
 					{fullscreen?
 					<Button 
@@ -107,7 +164,9 @@ const SearchBar: React.FC<Props> = ({
 						type='link' 
 						onClick={onPressRandom}
 					>
-						{fullscreen ? 'Random results of the day!' : 'test my luck'}
+						<Text style={{color:'#1890ff'}}>
+							{fullscreen ? 'Random results of the day!' : 'test my luck'}
+						</Text>
 					</Button>
 				</div>
 			</div>

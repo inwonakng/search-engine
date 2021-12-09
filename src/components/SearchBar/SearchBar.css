@@ -4,11 +4,22 @@
 	justify-Content:center;
 	align-items:center;
 	width:100%;
+	margin-top:20px;
+	padding: 0 20px;
 }
 
 .SearchBar.fullscreen{
 	height:100%;
 	width:100%;
+	margin-top:0;
+}
+
+.settings-menu{
+	/* margin-top:auto; */
+	/* margin-left:auto; */
+	align-self:flex-end;
+	top:20px;
+	position:absolute;
 }
 
 .inner{
@@ -70,4 +81,12 @@
 	height:10%;
 	display:flex;
 	flex-Direction:row;
+}
+
+div.ant-popover-content{
+	width:200px;
+}
+
+div.ant-input-number{
+	width:50px;
 }
