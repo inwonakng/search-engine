@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { QueryState } from '../query/querySlice'
+import { Query } from '../../types/query'
 import type { RootState } from '../store'
 // const sample_results = [{}]
 
@@ -29,7 +29,7 @@ export const resultsSlice = createSlice({
     name: 'results',
     initialState,
     reducers: {
-        getResults: (state,action:PayloadAction<QueryState>) => {
+        getResults: (state,action:PayloadAction<Query>) => {
      
         },
         searchSuccess: (state) => {

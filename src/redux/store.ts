@@ -1,5 +1,5 @@
 import { resultsSlice } from './results/resultsSlice'
-import { querySlice } from "./query/querySlice";
+import { searchHistorySlice } from "./searchHistory/searchHistorySlice";
 import { userSlice } from './user/userSlice';
 import { configureStore,combineReducers } from '@reduxjs/toolkit'
 // Or from '@reduxjs/toolkit/query/react'
@@ -28,7 +28,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     results: resultsSlice.reducer,
-    query: querySlice.reducer,
+    searchHistory: searchHistorySlice.reducer,
     user: userSlice.reducer,
 	[searchApi.reducerPath]:searchApi.reducer,
 })

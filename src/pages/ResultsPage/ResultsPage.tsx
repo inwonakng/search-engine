@@ -1,39 +1,49 @@
-import React from 'react';
-import * as qs from 'qs'
+import React, { useState } from 'react';
 
 import SearchBar from '../../components/SearchBar/SearchBar';
 import OneResult from '../../components/OneResult/OneResult';
 import SearchLoader from '../../components/SearchLoader/SearchLoader'
 
 import { useAppSelector,useAppDispatch } from '../../redux/hooks';
-import { getQuery, setQuery } from '../../redux/query/querySlice';
 import { useGetResultsQuery } from '../../redux/services/search';
-import { Typography } from 'antd'
+import { Pagination, Typography } from 'antd'
+import { Result } from '../../redux/results/resultsSlice';
 
 import './ResultsPage.css';
+import { useLocation } from 'react-router-dom';
+import { Query,from_url, to_url } from '../../types/query';
 
 const { Text } = Typography
 // import AnimatedLoader,{} from 'react-native-animated-loader';
 
 const ResultsPage = () => {
-    const params = useAppSelector((state)=>getQuery(state))
-    // const loading = useAppSelector((state)=>isLoading(state))
-    // const error = useAppSelector((state)=>getError(state))
     const dispatch = useAppDispatch()
-    dispatch(setQuery(params))
-    const { data, error, isLoading } = useGetResultsQuery(params)
-    console.log('results page')
+    const location = useLocation()
+    const [state,setstate] = useState({ query:from_url(location.search)})
+
+    console.log('results page', state.query)
+    // const query = useAppSelector((state)=>getQuery(state))
+        // const loading = useAppSelector((state)=>isLoading(state))
+    // const error = useAppSelector((state)=>getError(state))
+    // console.log(useAppSelector((state)=>getQuery(state)))
+
+    const { data, error, isLoading } = useGetResultsQuery(state.query)
     // console.log(data)
-    // let isLoading = false
-    // let error = undefined
-    // let data = [{title:'result1',body:'body',idx:0,url:'google.com'}]
-    // let error = undefined
 
-    // setTimeout(()=>{isLoading=false; error='ERRORhere';console.log('we did it')}, 10000)
+    window.history.replaceState('Results',`Page `,`${window.location.origin}${location.pathname}?${to_url(state.query)}`)
+    const onMovePage = (page:number,pageSize:number) => {
+        setstate({...state,query:{...state.query,page_idx:page-1}})
+        console.log(state.query)
+        // console.log(`${window.location.origin}${location.pathname}?${to_url(state.query)}`)
+        // console.log(`${location.}?${to_url(state.query)}`)
+    }
 
+    const getSlice = (data: Result[]):Result[] => data.slice((state.query.page_idx)*state.query.page_size,(state.query.page_idx)*state.query.page_size+state.query.page_size)
+
+    console.log((state.query.page_idx)*state.query.page_size,state.query.page_size)
     return(
         <div className="ResultsPage">
-            <SearchBar fullscreen={false} />{
+            <SearchBar fullscreen={false} prevSearch={state.query}/>{
             isLoading 
             ?   <div className="loading">
                     <SearchLoader/>
@@ -41,7 +51,7 @@ const ResultsPage = () => {
                 </div>
             :   error === undefined && data !== undefined && data.length > 0
                 ?
-                data.map( (r,i) =>
+                getSlice(data).map( (r,i) =>
                     <OneResult idx={i} title={r.title} body={r.body} url={r.body} key={r.title+i} />
                 )
                 :
@@ -49,8 +59,17 @@ const ResultsPage = () => {
                 <Text>Error!</Text>
                 // <OneResult idx={0} title={'Error'} body={error} url={''}/>
                 }
+            <div className="PageCount">
+                <Pagination 
+                    defaultCurrent={state.query.page_idx+1} 
+                    total={data?.length}
+                    pageSize={state.query.page_size}
+                    onChange={onMovePage} 
+                    showSizeChanger = {false}
+                    />
+            </div>
         </div>
     )
 }
 
-export default ResultsPage;
+export default React.memo(ResultsPage);

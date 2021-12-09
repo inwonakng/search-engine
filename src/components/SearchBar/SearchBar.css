@@ -5,14 +5,27 @@
 	align-items:center;
 	width:100%;
 }
+
+.SearchBar.fullscreen{
+	height:100%;
+	width:100%;
+}
+
 .inner{
 	/* height:40%; */
 	align-items: center;
 	justify-Content: center;
 	display: flex;
-	width: 80%;
+	width: 60%;
 	flex-Direction:column;
 }
+
+.inner.partial{
+	width:50%;
+	flex-direction:row;
+}
+
+
 .textBar{
 	display:flex;
 	flex-Direction:row;
@@ -23,13 +36,11 @@
 	align-items:center;
 	width: "100%";
 }
-input.searchInput{
-	width:50%;
-	border:1.5px solid rgba(161, 161, 161, 0.966);
-}
+
 .searchBtn{
 	margin-top:20px;
 }
+
 .btnGroup{
 	margin-top:20;
 	display:flex;
@@ -39,6 +50,13 @@ input.searchInput{
 	align-items: center;
 	padding: 5;
 }
+.btnGroup.partial{
+	margin-top:0;
+	flex:0.3;
+	flex-direction:row;
+	margin-bottom: 1%; /* .. it works */
+}
+
 .randomBtn{
 	margin-top:10px;
 }
@@ -52,9 +70,4 @@ input.searchInput{
 	height:10%;
 	display:flex;
 	flex-Direction:row;
-}
-
-.fullscreen{
-	height:100%;
-	width:100%;
 }
