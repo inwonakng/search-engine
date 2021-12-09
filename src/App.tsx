@@ -23,9 +23,7 @@ const AppRouter = () => {
 
 	const dispatch = useAppDispatch()
 	if(useAppSelector((state) => getId(state)) === undefined){
-		console.log('yes')
 		dispatch(setId(uuidv4()))
-
 	}
 
 	return (

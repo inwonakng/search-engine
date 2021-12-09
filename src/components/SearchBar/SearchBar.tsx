@@ -10,6 +10,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Query,emptyQuery } from '../../types/query'
 import { addHistory, getHistory } from '../../redux/searchHistory/searchHistorySlice';
 import { SettingOutlined } from '@ant-design/icons'
+import { to_url,from_url } from '../../types/query';
 
 import {random} from './randomqueries.js'
 const { Text } = Typography
@@ -48,7 +49,11 @@ const SearchBar: React.FC<Props> = ({
 	
 	const onPressSearch = () => {
 		// something something
+		
 		dispatch(addHistory(state.query))
+		console.log(`/results?${to_url(state.query)}`)
+		navigate(`/results?${to_url(state.query)}`,{replace:true})
+
 	}
 
 	const onPressSettings = () => {
@@ -149,7 +154,7 @@ const SearchBar: React.FC<Props> = ({
 						onClick={onPressSearch}
 					>
 						<Link to={state.query.text.length > 0 ? 
-									`/results?${qs.stringify(state.query)}`
+									`/results?${to_url(state.query)}`
 								:''}>
 							<Text strong={true} style={{color:'white'}}>
 								Search 
