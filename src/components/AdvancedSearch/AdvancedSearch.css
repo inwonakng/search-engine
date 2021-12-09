@@ -1,0 +1,9 @@
+.AdvancedSearch {
+    flex:0.1;
+    display:flex;
+    height:'500';
+    width:'500';
+    border-color:'red';
+    color:'blue';
+    position:'absolute';
+}

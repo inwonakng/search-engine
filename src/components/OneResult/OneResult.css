@@ -1,0 +1,27 @@
+.OneResult {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;   
+    margin: 10px;
+    width:40%;
+    /* border:1px black solid; */
+}
+
+.title-and-link{
+    display: flex;
+    flex-direction: row;
+}
+
+.resultTitle{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex:0.3
+}
+
+.resultLink{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
