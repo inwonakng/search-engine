@@ -6,7 +6,7 @@ import SearchLoader from '../../components/SearchLoader/SearchLoader'
 
 import { useAppSelector,useAppDispatch } from '../../redux/hooks';
 import { useGetResultsQuery } from '../../redux/services/search';
-import { Pagination, Typography } from 'antd'
+import { Pagination, Typography,Result as AntResult } from 'antd'
 import { Result } from '../../redux/results/resultsSlice';
 
 import './ResultsPage.css';
@@ -70,7 +70,13 @@ const ResultsPage = () => {
                 </>
                 :
                 // <View></View>
-                <Text>Error!</Text>
+                <AntResult
+                    status="404"
+                    title="404"
+                    subTitle="Sorry, the page you visited does not exist."
+                    // extra={<Button type="primary">Back Home</Button>}
+                />
+                // <Text>Error!</Text>
                 // <OneResult idx={0} title={'Error'} body={error} url={''}/>
                 }
         </div>
