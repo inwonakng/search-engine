@@ -104,6 +104,7 @@ const SearchBar: React.FC<Props> = ({
 				<Popover
 					visible={state.showsetting}
 					content={settingsMenu}
+					placement='leftTop'
 					trigger='click'
 					onVisibleChange={()=>setshowsetting(!state.showsetting)}
 				>
@@ -117,9 +118,11 @@ const SearchBar: React.FC<Props> = ({
 
 				</Popover>
 			</div>
-			<Link to='/'>
-				<Image src={logo} preview={false} />
-			</Link>
+			<div className={`logo ${rendertype}`}>
+				<Link to='/'>
+					<Image src={logo} preview={false} />
+				</Link>
+			</div>
 			<div className={`inner ${rendertype}`}>
 			<AutoComplete
 				dropdownMatchSelectWidth={252}
